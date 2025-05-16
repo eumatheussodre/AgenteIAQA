@@ -1,0 +1,17 @@
+streamlit
+langchain
+openai
+tesseract
+pdfplumber
+pytesseract
+openpyxl
+pandas
+selenium
+pytest
+fastapi
+uvicorn
+jinja2
+weasyprint
+chromadb
+azure-devops
+msrest
