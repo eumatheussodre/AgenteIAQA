@@ -15,3 +15,5 @@ weasyprint
 chromadb
 azure-devops
 msrest
+Faker==37.3.0
+
