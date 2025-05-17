@@ -1,10 +1,10 @@
 import streamlit as st
-from test_generator import *
 from Funcionalidades.Testes.file_processor import *
 from Funcionalidades.Testes.report_generator import *
 from Funcionalidades.Testes.data_generator import *
 from Funcionalidades.Testes.bank_generator import *
-from Funcionalidades.Testes.g_Test_Stress import * 
+from Funcionalidades.Testes.g_Test_Stress import *
+from Funcionalidades.Testes.test_generator import *
 
 
 st.set_page_config(page_title="Agente IA - [QA] - Prototipo - i4Pro", layout="wide")
@@ -74,10 +74,20 @@ elif menu == "Gerador de Testes de Carga":
     quantidade = st.slider("Quantidade de registros", min_value=1000, max_value=100000, value=10000)
 
     if st.button("🔥 Gerar Dados para Testes de Carga"):
-        salvar_csv("massa_carga.csv", quantidade)
-        salvar_json("massa_carga.json", quantidade)
-        
+        with st.spinner("⏳ Gerando massa de dados..."):
+            dados = gerar_massa_carga(quantidade)
+            salvar_arquivo(f"massa_carga.csv", dados, "csv")
+            salvar_arquivo(f"massa_carga.json", dados, "json")
+
         st.success(f"✅ {quantidade} registros gerados! Arquivos `massa_carga.csv` e `massa_carga.json` criados!")
+
+        # Adicionando botões de download
+        with open("massa_carga.csv", "rb") as f:
+            st.download_button("📥 Baixar CSV", f, file_name="massa_carga.csv", mime="text/csv")
+
+        with open("massa_carga.json", "rb") as f:
+            st.download_button("📥 Baixar JSON", f, file_name="massa_carga.json", mime="application/json")
+
 
 # 📤 Exportação de Relatório
 elif menu == "Exportar Relatório":
