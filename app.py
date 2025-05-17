@@ -3,39 +3,69 @@ from test_generator import gerar_casos_de_teste
 from file_processor import processar_arquivo
 from report_generator import exportar_relatorio
 from integrations.azure_client import AzureDevOpsClient
+from data_generator import gerar_massa_de_dados
+from bank_generator import gerar_massa_bancaria 
 
-st.set_page_config(page_title="Agente Inteligente de Testes", layout="wide")
-st.title("🧪 Agente Inteligente para Testes de Software")
+st.set_page_config(page_title="Agente IA - [QA] - Prototipo - i4Pro", layout="wide")
+st.title("🧪 Agente IA - Prototipo [QA] - i4Pro")
 
-uploaded_file = st.file_uploader("📁 Faça upload de um documento de requisitos (PDF, Excel, Imagem)", type=["pdf", "xlsx", "png", "jpg"])
+# 🏠 Menu lateral atualizado com nova opção
+menu = st.sidebar.radio("📌 Selecione uma função:", [
+    "Gerar Casos de Teste", "Gerador de Dados/Massa", "Gerador de Massa Bancária", "Exportar Relatório"
+])
 
-if uploaded_file:
-    texto_extraido = processar_arquivo(uploaded_file)
-    st.subheader("📄 Texto Extraído")
-    st.text_area("Conteúdo", texto_extraido, height=200)
+# 📌 Geração de Casos de Teste
+if menu == "Gerar Casos de Teste":
+    st.subheader("📁 Upload de Documentos")
+    uploaded_dev = st.file_uploader("Upload do Documento do Desenvolvedor", type=["pdf", "xlsx", "png", "jpg"])
+    uploaded_spec = st.file_uploader("Upload da Especificação Funcional", type=["pdf", "xlsx", "png", "jpg"])
 
-    if st.button("🧠 Gerar Casos de Teste"):
-        casos = gerar_casos_de_teste(texto_extraido)
-        st.subheader("✅ Casos de Teste Gerados")
-        for i, caso in enumerate(casos, 1):
-            st.markdown(f"**{i}.** {caso}")
+    if uploaded_dev and uploaded_spec:
+        st.success("✅ Ambos os documentos foram enviados!")
+        texto_dev = processar_arquivo(uploaded_dev)
+        texto_spec = processar_arquivo(uploaded_spec)
 
-        # Envio para Azure DevOps
-        st.subheader("☁️ Enviar para Azure DevOps")
-        with st.form("azure_form"):
-            org_url = st.text_input("🔗 URL da Organização Azure", "https://dev.azure.com/sua_org")
-            pat = st.text_input("🔑 Personal Access Token (PAT)", type="password")
-            projeto = st.text_input("📁 Nome do Projeto", "SeuProjeto")
-            enviar = st.form_submit_button("📤 Enviar Test Cases")
+        if st.button("🧠 Gerar Casos de Teste"):
+            casos = gerar_casos_de_teste(texto_dev, texto_spec) or []
 
-        if enviar:
-            client = AzureDevOpsClient(org_url, pat, projeto)
-            for caso in casos:
-                titulo = caso.split("\n")[0][:100]  # Título = primeira linha
-                passos = caso.replace("\n", "<br>")  # Passos como HTML
-                client.criar_test_case(titulo, passos)
-            st.success("✅ Casos enviados ao Azure DevOps com sucesso!")
+            if casos:
+                st.subheader("✅ Casos de Teste Gerados")
+                for i, caso in enumerate(casos, 1):
+                    st.markdown(f"**{i}.** {caso}")
+            else:
+                st.error("⚠️ Nenhum caso de teste foi gerado!")
 
-        if st.button("📤 Exportar Relatório"):
-            exportar_relatorio(casos)
-            st.success("Relatório exportado com sucesso!")
+# 📊 Gerador de Massa de Dados para QA
+elif menu == "Gerador de Dados/Massa":
+    st.subheader("⚙️ Gerador de Massa de Dados para QA")
+
+    quantidade = st.slider("Quantidade de registros", min_value=1, max_value=50, value=10)
+
+    if st.button("📊 Gerar Dados"):
+        massa_dados = gerar_massa_de_dados(quantidade)
+
+        st.subheader(f"📄 {quantidade} Registros Gerados")
+        for dado in massa_dados:
+            st.write(dado)
+
+# 💳 Novo: Gerador de Massa Bancária
+elif menu == "Gerador de Massa Bancária":
+    st.subheader("🏦 Gerador de Massa de Dados Bancários")
+
+    quantidade = st.slider("Quantidade de contas bancárias", min_value=1, max_value=50, value=10)
+
+    if st.button("💳 Gerar Dados Bancários"):
+        massa_bancaria = gerar_massa_bancaria(quantidade)
+
+        st.subheader(f"📄 {quantidade} Contas Bancárias Geradas")
+        for dado in massa_bancaria:
+            st.write(dado)
+
+# 📤 Exportação de Relatório
+elif menu == "Exportar Relatório":
+    st.subheader("📑 Exportar Relatório de Casos de Teste")
+
+    if st.button("📤 Exportar Relatório"):
+        casos = gerar_casos_de_teste("Documento exemplo 1", "Documento exemplo 2")  # Exemplo para geração
+        exportar_relatorio(casos)
+        st.success("✅ Relatório exportado com sucesso!")

@@ -1,17 +1,26 @@
-# 🧪 Agente Inteligente para Testes de Software
+# 🧪 Agente IA - [QA] - Prototipo - i4Pro v.0.0.3
 
-O **Agente Inteligente para Testes** é uma aplicação que utiliza Inteligência Artificial para gerar automaticamente **casos de teste** com base em documentos de requisitos (PDF, Excel, imagens). Além disso, permite o **envio direto para o Azure DevOps Boards**, agilizando o processo de testes e integração com o time de QA.
+O **Agente IA - [QA] - Prototipo - i4Pro** é uma aplicação que utiliza Inteligência Artificial para gerar automaticamente **casos de teste** com base em documentos de requisitos (PDF, Excel, imagens). 
+
+
 
 ---
+## 📝 Histórico de Versões
 
-## 🚀 Funcionalidades
-
-- 📄 **Extração de requisitos** de documentos (PDF, Excel, imagens escaneadas).
+### 📌 **v0.0.1 – [16/05/2025]**
+- 📄 **📄 Extração de requisitos de documentos** (PDF, Excel, imagens escaneadas).
 - 🤖 **Geração automática de casos de teste** com IA (GPT).
-- ☁️ **Integração com Azure DevOps Boards** para criação de Test Cases.
 - 📤 **Exportação de relatórios** em PDF, Markdown e Excel.
 - 💬 **Interface Web interativa** com Streamlit.
-- 🔌 **API REST** opcional para automação ou integração com outros sistemas.
+
+### 📌 **v0.0.2 – [16/05/2025]**
+🔹 **Melhoria na geração de massa de dados para QA**  
+🔹 **Correção do `enumerate` no Jinja2 para relatórios**  
+🔹 **Adição do suporte a exportação de relatórios HTML** 
+🔹 **Adição de Menus Laterais**  
+🔹 **Criação do módulo `bank_generator.py`** para separar massa de dados bancários  
+🔹 **Correção do erro `ModuleNotFoundError: No module named 'faker'` no Docker**  
+🔹 **Exportação de massa bancária para CSV** 
 
 ---
 
@@ -23,8 +32,8 @@ O **Agente Inteligente para Testes** é uma aplicação que utiliza Inteligênci
 - **Tesseract OCR** – Leitura de textos em imagens
 - **pdfplumber / openpyxl** – Processamento de arquivos PDF e Excel
 - **WeasyPrint** – Exportação de relatórios em PDF
-- **Azure DevOps Python SDK** – Integração com Azure Boards
 - Docker (opcional)
+- Faker
 
 ---
 
@@ -34,8 +43,6 @@ O **Agente Inteligente para Testes** é uma aplicação que utiliza Inteligênci
 
 - Python 3.11 instalado
 - Pip (gerenciador de pacotes)
-- Tesseract OCR instalado e no PATH
-- Conta e token de acesso (PAT) no Azure DevOps
 
 ### 1. Clone o repositório
 
@@ -69,32 +76,13 @@ docker run -p 8501:8501 agente-testes
 
 ---
 
-## ☁️ Integração com Azure DevOps
-
-Para enviar casos de teste diretamente ao Azure DevOps Boards:
-
-1. Obtenha seu **Personal Access Token (PAT)** [aqui](https://dev.azure.com).
-2. Preencha no formulário da aplicação:
-   - URL da organização (ex: `https://dev.azure.com/sua_org`)
-   - Nome do projeto
-   - Seu token PAT
-
----
-
-## 🧠 Exemplo de Uso
-
-1. Faça upload de um documento com requisitos.
-2. Clique em **"Gerar Casos de Teste"**.
-3. Revise os casos gerados.
-4. Clique em **"Enviar para Azure DevOps"** ou **"Exportar Relatório"**.
-
----
-
 ## 📁 Estrutura do Projeto
 
 ```
 agente_inteligente_testes/
 ├── app.py
+├── bank_generator.py
+├── data_generator
 ├── api.py
 ├── chatbot.py
 ├── automation_engine.py
@@ -107,33 +95,6 @@ agente_inteligente_testes/
 │   └── github_client.py
 ├── requirements.txt
 └── README.md
-```
-
----
-
-## ☁️ Hospedagem Gratuita com Docker + GitHub + Railway
-
-Você pode hospedar este projeto gratuitamente usando:
-
-- [Railway.app](https://railway.app)
-- [Render](https://render.com)
-
-### Exemplo com Railway
-
-1. Crie uma conta em [railway.app](https://railway.app)
-2. Clique em **"Deploy from GitHub repo"**
-3. Conecte seu repositório com este projeto
-4. Railway detectará automaticamente o `Dockerfile`
-5. Configure variáveis de ambiente (como `OPENAI_API_KEY`, `AZURE_PAT_TOKEN`, etc.)
-6. Acesse a URL pública gerada
-
----
-
-## 📛 Badges (opcional)
-
-```md
-![Build](https://img.shields.io/github/actions/workflow/status/seu-usuario/agente-inteligente-testes/deploy.yml)
-![License](https://img.shields.io/github/license/seu-usuario/agente-inteligente-testes)
 ```
 
 ---
