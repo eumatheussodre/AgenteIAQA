@@ -5,6 +5,8 @@ from report_generator import exportar_relatorio
 from integrations.azure_client import AzureDevOpsClient
 from data_generator import gerar_massa_de_dados
 from bank_generator import gerar_massa_bancaria 
+from load_generator import salvar_csv, salvar_json
+
 
 st.set_page_config(page_title="Agente IA - [QA] - Prototipo - i4Pro", layout="wide")
 st.title("🧪 Agente IA - Prototipo [QA] - i4Pro")
@@ -60,6 +62,18 @@ elif menu == "Gerador de Massa Bancária":
         st.subheader(f"📄 {quantidade} Contas Bancárias Geradas")
         for dado in massa_bancaria:
             st.write(dado)
+
+# 🏋️‍♂️ Novo: Gerador de Massa para Testes de Carga
+elif menu == "Gerador de Massa para Testes de Carga":
+    st.subheader("⚡ Gerador de Massa para Testes de Carga")
+
+    quantidade = st.slider("Quantidade de registros", min_value=1000, max_value=100000, value=10000)
+
+    if st.button("🔥 Gerar Dados para Testes de Carga"):
+        salvar_csv("massa_carga.csv", quantidade)
+        salvar_json("massa_carga.json", quantidade)
+        
+        st.success(f"✅ {quantidade} registros gerados! Arquivos `massa_carga.csv` e `massa_carga.json` criados!")
 
 # 📤 Exportação de Relatório
 elif menu == "Exportar Relatório":
