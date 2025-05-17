@@ -24,9 +24,10 @@ O **Agente IA - [QA] - Prototipo - i4Pro** é uma aplicação que utiliza Inteli
 
 ### 📌 **v0.0.3 – [16/05/2025]**
 🔹 **Melhorando a Geração de Casos de Testes**
-   - Foi adicionado opções de **Upload do Documento do Desenvolvedor e da Especificação de Funcionalidade**
+      Foi adicionado opções de **Upload do Documento do Desenvolvedor e da Especificação de Funcionalidade**
+
 🔹 **Foi Melhorando a Geração Fake de Dados Bancarios**
-   - A geração agora, permiti no minimo a **Geração de 5 Massas de Dados**
+      A geração agora, permiti no minimo a **Geração de 5 Massas de Dados**
 
 ---
 
