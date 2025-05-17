@@ -1,5 +1,6 @@
 @echo off
 echo 🚀 Iniciando o container Docker...
+echo Aguarde pequeno Gafanhoto
 
 docker stop agente-testes
 docker rm agente-testes

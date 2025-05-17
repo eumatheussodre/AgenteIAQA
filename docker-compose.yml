@@ -1,5 +1,3 @@
-version: ''
-
 services:
   agente-ia:
     build: .

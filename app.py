@@ -14,7 +14,7 @@ st.title("🧪 Agente IA - Prototipo [QA] - i4Pro")
 menu = st.sidebar.radio("📌 Selecione uma função:", 
 [
     "Gerar Casos de Teste",
-    "Gerador de Dados/Massa",
+    "Gerador de Dados",
     "Gerador de Massa Bancária",
     "Gerador de Testes de Carga",
     "Exportar Relatório"
@@ -42,7 +42,7 @@ if menu == "Gerar Casos de Teste":
                 st.error("⚠️ Nenhum caso de teste foi gerado!")
 
 # 📊 Gerador de Massa de Dados para QA
-elif menu == "Gerador de Dados/Massa":
+elif menu == "Gerador de Dados":
     st.subheader("⚙️ Gerador de Massa de Dados para QA")
 
     quantidade = st.slider("Quantidade de registros", min_value=1, max_value=50, value=10)
@@ -68,7 +68,7 @@ elif menu == "Gerador de Massa Bancária":
             st.write(dado)
 
 # 🏋️‍♂️ Novo: Gerador de Massa para Testes de Carga
-elif menu == "Gerador Carga de Testes":
+elif menu == "Gerador de Testes de Carga":
     st.subheader("⚡ Gerador de Testes de Carga")
 
     quantidade = st.slider("Quantidade de registros", min_value=1000, max_value=100000, value=10000)

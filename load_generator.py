@@ -6,7 +6,8 @@ from concurrent.futures import ThreadPoolExecutor
 
 fake = Faker()
 
-def gerar_massa_carga(quantidade=10000):
+def gerar_massa_carga(quantidade: int = 10000) -> list[dict[str, str | float | None]]:
+    """Gera uma lista de dicionários com dados fake para testes de carga."""
     dados = []
     for _ in range(quantidade):
         dados.append({
@@ -14,8 +15,8 @@ def gerar_massa_carga(quantidade=10000):
             "Nome": fake.name(),
             "Email": fake.email(),
             "Endereço": fake.address(),
-            "Telefone": fake.phone_number(),
-            "Data de Nascimento": fake.date_of_birth(),
+            "Telefon": fake.phone_number(),
+            "Data de Nascimento": fake.date_of_birth().strftime("%Y-%m-%d"),
             "Empresa": fake.company(),
             "Salário": round(random.uniform(2000, 15000), 2)
         })
