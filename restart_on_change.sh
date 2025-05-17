@@ -1,6 +1,6 @@
 #!/bin/bash
 
-SERVICE_NAME="agente-testes"
+SERVICE_NAME="agenteiaqa-agente-ia-1"
 
 echo "📡 Monitorando mudanças para reiniciar o container $SERVICE_NAME..."
 

@@ -18,7 +18,7 @@ menu = st.sidebar.radio("📌 Selecione uma função:",
     "Gerador de Dados",
     "Gerador de Massa Bancária",
     "Gerador de Testes de Carga",
-    "Teste de API",
+    "Testador de API",
     "Exportar Relatório"
 ])
 
@@ -90,6 +90,25 @@ elif menu == "Gerador de Testes de Carga":
         with open("massa_carga.json", "rb") as f:
             st.download_button("📥 Baixar JSON", f, file_name="massa_carga.json", mime="application/json")
 
+# 🔍 Testador de API            
+elif menu == "Testador de API":
+    st.subheader("🔍 Testador de API - Tipo Postman")
+
+    url_api = st.text_input("🔗 Insira a URL da API:")
+    metodo = st.selectbox("📡 Escolha o método HTTP:", ["GET", "POST", "PUT", "DELETE"])
+
+    payload = None
+    if metodo in ["POST", "PUT"]:
+        payload = st.text_area("📤 Insira o payload JSON:", "{}")
+
+    if st.button("🚀 Testar API"):
+        with st.spinner("⏳ Executando requisição..."):
+            try:
+                resposta = requests.request(metodo, url_api, json=json.loads(payload) if payload else None, timeout=5)
+                st.code(resposta.text)
+                st.success(f"📡 Status HTTP: {resposta.status_code} | ⏳ Tempo: {resposta.elapsed.total_seconds()}s")
+            except requests.exceptions.RequestException as e:
+                st.error(f"❌ Erro: {e}")
 
 # 📤 Exportação de Relatório
 elif menu == "Exportar Relatório":
