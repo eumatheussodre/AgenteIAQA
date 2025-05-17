@@ -30,6 +30,7 @@ def salvar_csv(nome_arquivo="massa_carga.csv", quantidade=10000):
     print(f"✅ Arquivo CSV '{nome_arquivo}' gerado!")
 
 def salvar_json(nome_arquivo="massa_carga.json", quantidade=10000):
+    
     dados = gerar_massa_carga(quantidade)
     with open(nome_arquivo, mode='w', encoding='utf-8') as arquivo_json:
         json.dump(dados, arquivo_json, indent=4, ensure_ascii=False)
