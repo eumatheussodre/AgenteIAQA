@@ -1,10 +1,10 @@
 import streamlit as st
-from test_generator import *
-from Funcionalidades.Testes.file_processor import *
-from Funcionalidades.Testes.report_generator import *
-from Funcionalidades.Testes.data_generator import *
-from Funcionalidades.Testes.bank_generator import *
-from Funcionalidades.Testes.g_Test_Stress import * 
+from test_generator import gerar_casos_de_teste
+from file_processor import processar_arquivo
+from report_generator import exportar_relatorio
+from data_generator import gerar_massa_de_dados
+from bank_generator import gerar_massa_bancaria 
+from load_generator import salvar_csv, salvar_json
 
 
 st.set_page_config(page_title="Agente IA - [QA] - Prototipo - i4Pro", layout="wide")
