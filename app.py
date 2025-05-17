@@ -5,6 +5,7 @@ from Funcionalidades.Testes.data_generator import *
 from Funcionalidades.Testes.bank_generator import *
 from Funcionalidades.Testes.g_Test_Stress import *
 from Funcionalidades.Testes.test_generator import *
+from Funcionalidades.Testes.test_API import *   
 
 
 st.set_page_config(page_title="Agente IA - [QA] - Prototipo - i4Pro", layout="wide")
@@ -17,6 +18,7 @@ menu = st.sidebar.radio("📌 Selecione uma função:",
     "Gerador de Dados",
     "Gerador de Massa Bancária",
     "Gerador de Testes de Carga",
+    "Teste de API",
     "Exportar Relatório"
 ])
 
