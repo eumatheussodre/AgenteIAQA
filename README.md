@@ -8,7 +8,7 @@ O **Agente IA - [QA] - Prototipo - i4Pro** é uma aplicação que utiliza Inteli
 ## 📝 Histórico de Versões
 
 ### 📌 **v0.0.1 – [16/05/2025]**
-- 📄 **📄 Extração de requisitos de documentos** (PDF, Excel, imagens escaneadas).
+- 📄 **Extração de requisitos de documentos** (PDF, Excel, imagens escaneadas).
 - 🤖 **Geração automática de casos de teste** com IA (GPT).
 - 📤 **Exportação de relatórios** em PDF, Markdown e Excel.
 - 💬 **Interface Web interativa** com Streamlit.
@@ -20,7 +20,13 @@ O **Agente IA - [QA] - Prototipo - i4Pro** é uma aplicação que utiliza Inteli
 🔹 **Adição de Menus Laterais**  
 🔹 **Criação do módulo `bank_generator.py`** para separar massa de dados bancários  
 🔹 **Correção do erro `ModuleNotFoundError: No module named 'faker'` no Docker**  
-🔹 **Exportação de massa bancária para CSV** 
+🔹 **Exportação de massa bancária para CSV**
+
+### 📌 **v0.0.3 – [16/05/2025]**
+🔹 **Melhorando a Geração de Casos de Testes**
+   - Foi adicionado opções de **Upload do Documento do Desenvolvedor e da Especificação de Funcionalidade**
+🔹 **Foi Melhorando a Geração Fake de Dados Bancarios**
+   - A geração agora, permiti no minimo a **Geração de 5 Massas de Dados**
 
 ---
 
