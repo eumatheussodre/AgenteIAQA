@@ -16,7 +16,7 @@ menu = st.sidebar.radio("📌 Selecione uma função:",
     "Gerar Casos de Teste",
     "Gerador de Dados/Massa",
     "Gerador de Massa Bancária",
-    "Gerador de Testes de Carga",  # ✅ Adicionado ao menu!
+    "Gerador de Testes de Carga",
     "Exportar Relatório"
 ])
 
