@@ -13,6 +13,7 @@ O **Agente IA - [QA] - Prototipo - i4Pro** é uma aplicação que utiliza Inteli
 - 📤 **Exportação de relatórios** em PDF, Markdown e Excel.
 - 💬 **Interface Web interativa** com Streamlit.
 
+
 ### 📌 **v0.0.2 – [16/05/2025]**
 🔹 **Melhoria na geração de massa de dados para QA**  
 🔹 **Correção do `enumerate` no Jinja2 para relatórios**  
@@ -22,12 +23,28 @@ O **Agente IA - [QA] - Prototipo - i4Pro** é uma aplicação que utiliza Inteli
 🔹 **Correção do erro `ModuleNotFoundError: No module named 'faker'` no Docker**  
 🔹 **Exportação de massa bancária para CSV**
 
+
 ### 📌 **v0.0.3 – [16/05/2025]**
 🔹 **Melhorando a Geração de Casos de Testes**
-      Foi adicionado opções de **Upload do Documento do Desenvolvedor e da Especificação de Funcionalidade**
+      - Foi adicionado opções de **Upload do Documento do Desenvolvedor e da Especificação de Funcionalidade**
+      ![Descrição do GIF](https://link-do-gif.gif)
+
 
 🔹 **Foi Melhorando a Geração Fake de Dados Bancarios**
-      A geração agora, permiti no minimo a **Geração de 5 Massas de Dados**
+      - A geração agora, permiti no minimo a **Geração de 5 Massas de Dados**
+      ![Descrição do GIF](https://link-do-gif.gif)
+
+
+### 📌 **v0.0.5 – [18/05/2025]**
+🔹 **Adição do Test Stress**
+      - Agora é possivel gerar Massa de Dados, para realziar Tests de Stress
+      ![Descrição do GIF](https://link-do-gif.gif)
+
+
+🔹 **Adição de Test API**
+      - Agora é possivel realizar Testes de API, via Agente IA. 
+      ![Descrição do GIF](https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExcWJyeXV0MzcxeWJvZm5tOTVoaGNyazM4Mmh6Z3duOTV0em1xMzdsNSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/44okQTpfZAlr2ilEgg/giphy.gif)
+
 
 ---
 
