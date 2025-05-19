@@ -38,12 +38,12 @@ O **Agente IA - [QA] - Prototipo - i4Pro** é uma aplicação que utiliza Inteli
 ### 📌 **v0.0.5 – [18/05/2025]**
 🔹 **Adição do Test Stress**
       - Agora é possivel gerar Massa de Dados, para realziar Tests de Stress
-      ![Descrição do GIF](https://link-do-gif.gif)
+      (https://link-do-gif.gif)
 
 
 🔹 **Adição de Test API**
       - Agora é possivel realizar Testes de API, via Agente IA. 
-      ![Evidencia de Uso do Teste de API](https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExcWJyeXV0MzcxeWJvZm5tOTVoaGNyazM4Mmh6Z3duOTV0em1xMzdsNSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/44okQTpfZAlr2ilEgg/giphy.gif)
+      (https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExcWJyeXV0MzcxeWJvZm5tOTVoaGNyazM4Mmh6Z3duOTV0em1xMzdsNSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/44okQTpfZAlr2ilEgg/giphy.gif)
 
 
 ---
