@@ -25,25 +25,26 @@ O **Agente IA - [QA] - Prototipo - i4Pro** é uma aplicação que utiliza Inteli
 
 
 ### 📌 **v0.0.3 – [16/05/2025]**
-🔹 **Melhorando a Geração de Casos de Testes**
+🔹 **Melhorando a Geração de Casos de Testes** <br>
       - Foi adicionado opções de **Upload do Documento do Desenvolvedor e da Especificação de Funcionalidade**
-      ![Descrição do GIF](https://link-do-gif.gif)
 
 
-🔹 **Foi Melhorando a Geração Fake de Dados Bancarios**
-      - A geração agora, permiti no minimo a **Geração de 5 Massas de Dados**
-      ![Descrição do GIF](https://link-do-gif.gif)
+🔹 **Foi Melhorando a Geração Fake de Dados Bancarios** <br>
+      - A geração agora, permiti no minimo a **Geração de 5 Massas de Dados**  
 
 
 ### 📌 **v0.0.5 – [18/05/2025]**
-🔹 **Adição do Test Stress**
+🔹 **Adição do Test Stress** <br>
       - Agora é possivel gerar Massa de Dados, para realziar Tests de Stress
-      (https://link-do-gif.gif)
 
-
-🔹 **Adição de Test API**
+🔹 **Adição de Test API** <br>
       - Agora é possivel realizar Testes de API, via Agente IA. 
-      (https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExcWJyeXV0MzcxeWJvZm5tOTVoaGNyazM4Mmh6Z3duOTV0em1xMzdsNSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/44okQTpfZAlr2ilEgg/giphy.gif)
+      ![API](https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExcWJyeXV0MzcxeWJvZm5tOTVoaGNyazM4Mmh6Z3duOTV0em1xMzdsNSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/44okQTpfZAlr2ilEgg/giphy.gif)
+
+### 📌 **v0.0.7 – [18/05/2025]**
+🔹 **Melhoria na Geração de Dados** <br>
+      - Agora é possivel selecionar os dados, que você deseja gerar para seu testes.
+      ![GeracaoDeDadosv2](https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmZlaXc0Y2p2cnl6ajQxd25jamQ5eGpuNjF1b3F6YnBnZWM0a2NqcCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3hoCVPt9QQyE7TG9tB/giphy.gif)
 
 
 ---
@@ -58,6 +59,7 @@ O **Agente IA - [QA] - Prototipo - i4Pro** é uma aplicação que utiliza Inteli
 - **WeasyPrint** – Exportação de relatórios em PDF
 - Docker (opcional)
 - Faker
+- Entr
 
 ---
 
