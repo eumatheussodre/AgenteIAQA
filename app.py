@@ -30,7 +30,7 @@ with st.sidebar.expander("📌 Menu", expanded=False):
             "Gerador de Dados",
             "Gerador de Massa Bancária",
             "Gerador de Testes de Carga",
-            "Gerar Casos de Teste",
+            "Gerar Cenários de Teste",
             "Testar API"
         ],
         key="menu_unificado"
@@ -52,7 +52,7 @@ CAMPOS_DISPONIVEIS = [
 pagina = st.session_state.pagina
 
 # Conteúdo das páginas
-if pagina == "Gerar Casos de Teste":
+if pagina == "Gerar Cenários de Teste":
     st.subheader("📁 Upload de Documentos")
     uploaded_dev = st.file_uploader("Documento do Desenvolvedor", type=["pdf", "xlsx", "png", "jpg"])
     uploaded_spec = st.file_uploader("Especificação Funcional", type=["pdf", "xlsx", "png", "jpg"])
