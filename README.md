@@ -46,6 +46,11 @@ O **Agente IA - [QA] - Prototipo - i4Pro** é uma aplicação que utiliza Inteli
       - Agora é possivel selecionar os dados, que você deseja gerar para seu testes.
       ![GeracaoDeDadosv2](https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmZlaXc0Y2p2cnl6ajQxd25jamQ5eGpuNjF1b3F6YnBnZWM0a2NqcCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3hoCVPt9QQyE7TG9tB/giphy.gif)
 
+### 📌 **v0.0.8 – [22/05/2025]**
+🔹 **Melhoria no Menu Lateral** <br>
+      - Menu Lateral, anteriormente, estava gerando confusão e certos Bugs. Então, resolvi realizar a unificação dos Menus.
+      ![MenuLateral]()
+
 
 ---
 
