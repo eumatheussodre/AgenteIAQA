@@ -1,6 +1,6 @@
-# 🧪 Agente IA - [QA] - Prototipo - i4Pro v.0.0.3
+# 🧪 AgenteIA Engine – TGI
 
-O **Agente IA - [QA] - Prototipo - i4Pro** é uma aplicação que utiliza Inteligência Artificial para gerar automaticamente **casos de teste** com base em documentos de requisitos (PDF, Excel, imagens). 
+O **AgenteIA Engine – TGI** é uma aplicação que utiliza Inteligência Artificial para gerar automaticamente **casos de teste** com base em documentos de requisitos (PDF, Excel, imagens). 
 
 
 
