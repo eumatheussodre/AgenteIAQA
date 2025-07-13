@@ -1,147 +1,240 @@
 import streamlit as st
 import requests
 import json
-import io
+import pandas as pd
 
-# Importando os módulos necessários
-from Funcionalidades.Testes.Geradores.generator_Date import gerar_massa_de_dados
-from Funcionalidades.Testes.Geradores.generator_Casos import gerar_casos_de_teste
-from Funcionalidades.Testes.Geradores.generator_Bank import gerar_massa_bancaria
-from Funcionalidades.Testes.Geradores.generator_Report import exportar_relatorio
-from Funcionalidades.Testes.Geradores.generator_Stress import *
-from Funcionalidades.utils import *
+# --- Módulos do Projeto ---
+# Garanta que os módulos abaixo existem na sua estrutura de pastas (ex: Funcionalidades/Testes/Geradores/)
+# para que a aplicação funcione corretamente.
+try:
+    from Funcionalidades.Testes.Geradores.generator_Date import gerar_massa_de_dados
+    from Funcionalidades.Testes.Geradores.generator_Casos import gerar_casos_de_teste
+    from Funcionalidades.Testes.Geradores.generator_Bank import gerar_massa_bancaria
+    from Funcionalidades.Testes.Geradores.generator_Report import exportar_relatorio
+except ImportError:
+    st.error("ERRO: Não foi possível encontrar os módulos de funcionalidades. Verifique a estrutura do seu projeto.")
+    st.stop()
 
-# Funções de salvamento de carga (implementar conforme necessidade)
-def salvar_csv(filename, quantidade):
-    raise NotImplementedError
 
-def salvar_json(filename, quantidade):
-    raise NotImplementedError
+# --- Funções Auxiliares (Reutilizáveis) ---
 
-# Inicializa a página
-if "pagina" not in st.session_state:
-    st.session_state.pagina = "Home"
-
-# Menu unificado
-with st.sidebar.expander("📌 Menu", expanded=False):
-    opcao = st.radio(
-        "Selecione uma funcionalidade:",
-        [
-            "Gerador de Dados",
-            "Gerador de Massa Bancária",
-            "Gerador de Testes de Carga",
-            "Gerar Cenários de Teste",
-            "Testar API"
-        ],
-        key="menu_unificado"
+def exibir_e_baixar_json(titulo, dados_json, nome_arquivo):
+    """Exibe um título, os dados formatados em JSON e um botão de download."""
+    st.subheader(titulo)
+    st.json(dados_json)
+    json_string = json.dumps(
+        dados_json, ensure_ascii=False, indent=4).encode('utf-8')
+    st.download_button(
+        label="⬇️ Baixar JSON",
+        data=json_string,
+        file_name=nome_arquivo,
+        mime="application/json"
     )
-    st.session_state.pagina = opcao
 
-# Exportar Relatório como opção independente
-if st.sidebar.button("📤 Exportar Relatório", key="exportar_relatorio"):
-    st.session_state.pagina = "Exportar Relatório"
 
-# Cabeçalho
+def exibir_e_baixar_csv(titulo, dataframe, nome_arquivo):
+    """Exibe um título, uma tabela de dados e um botão de download para CSV."""
+    st.subheader(titulo)
+    # Mostra apenas as primeiras linhas para performance
+    st.dataframe(dataframe.head())
+    csv_string = dataframe.to_csv(index=False).encode('utf-8')
+    st.download_button(
+        label="⬇️ Baixar CSV",
+        data=csv_string,
+        file_name=nome_arquivo,
+        mime="text/csv"
+    )
+
+# --- Inicialização do Estado da Sessão ---
+
+
+def inicializar_estado():
+    """Define os valores iniciais para o st.session_state se não existirem."""
+    if "pagina" not in st.session_state:
+        st.session_state.pagina = "Gerador de Dados"
+    if "casos_de_teste_gerados" not in st.session_state:
+        st.session_state.casos_de_teste_gerados = []
+    if "api_headers" not in st.session_state:
+        st.session_state.api_headers = {}
+
+
+inicializar_estado()
+
+# --- Barra Lateral (Sidebar) ---
+
+with st.sidebar:
+    st.image(
+        "https://d1my6w132otbna.cloudfront.net/pub/media/wysiwyg/TGI/tgi-logo-300.png", width=150)
+    st.header("📌 Menu Principal")
+
+    paginas_menu = [
+        "Gerar Cenários de Teste",
+        "Gerador de Dados",
+        "Gerador de Massa Bancária",
+        "Gerador de Testes de Carga",
+        "Testar API",
+        "Exportar Relatório"
+    ]
+    st.session_state.pagina = st.radio(
+        "Selecione uma funcionalidade:",
+        paginas_menu,
+        key="menu_principal"
+    )
+
+# Título da Página Dinâmico
 st.title(f"🧪 AgenteIA Engine – TGI | {st.session_state.pagina}")
 
-# Campos disponíveis para geração de dados
-CAMPOS_DISPONIVEIS = [
-    "nome", "email", "cpf", "cnpj", "telefone", "endereco", "data_nascimento"
-]
 
-pagina = st.session_state.pagina
+# --- Lógica das Páginas ---
 
-# Conteúdo das páginas
-if pagina == "Gerar Cenários de Teste":
+if st.session_state.pagina == "Gerar Cenários de Teste":
     st.subheader("📁 Upload de Documentos")
-    uploaded_dev = st.file_uploader("Documento do Desenvolvedor", type=["pdf", "xlsx", "png", "jpg"])
-    uploaded_spec = st.file_uploader("Especificação Funcional", type=["pdf", "xlsx", "png", "jpg"])
+    st.info("Envie os documentos de desenvolvimento e especificação para gerar os casos de teste.")
+
+    uploaded_dev = st.file_uploader("Documento do Desenvolvedor", type=[
+                                    "pdf", "txt", "md", "docx"])
+    uploaded_spec = st.file_uploader("Especificação Funcional", type=[
+                                     "pdf", "txt", "md", "docx"])
 
     if uploaded_dev and uploaded_spec:
         st.success("✅ Documentos recebidos!")
-        texto_dev = processar_arquivo(uploaded_dev)
-        texto_spec = processar_arquivo(uploaded_spec)
-        if st.button("🧠 Gerar Casos de Teste"):
-            casos = gerar_casos_de_teste(texto_dev, texto_spec) or []
+        if st.button("🧠 Gerar Casos de Teste", type="primary"):
+            with st.spinner("Analisando documentos e gerando casos..."):
+                texto_dev = processar_arquivo(uploaded_dev)
+                texto_spec = processar_arquivo(uploaded_spec)
+                casos = gerar_casos_de_teste(texto_dev, texto_spec)
+                st.session_state.casos_de_teste_gerados = casos
+
             if casos:
                 st.subheader("✅ Casos de Teste Gerados")
                 for i, caso in enumerate(casos, 1):
                     st.markdown(f"**Caso {i}:**\n```\n{caso}\n```")
-                txt_buffer = io.StringIO()
-                txt_buffer.write("\n\n".join(casos))
-                st.download_button("⬇️ Baixar Casos (.txt)", data=txt_buffer.getvalue(), file_name="casos_de_teste.txt")
+                txt_buffer = "\n\n".join(casos)
+                st.download_button(
+                    "⬇️ Baixar Casos (.txt)", data=txt_buffer, file_name="casos_de_teste.txt")
             else:
-                st.warning("⚠️ Nenhum caso gerado.")
-    else:
-        st.info("Envie ambos os documentos para continuar.")
-elif pagina == "Gerador de Dados":
+                st.warning(
+                    "⚠️ Nenhum caso de teste foi gerado a partir dos documentos.")
+
+elif st.session_state.pagina == "Gerador de Dados":
     st.subheader("⚙️ Gerador de Massa de Dados para QA")
-    quantidade = st.slider("Quantidade de registros", 1, 50, 10)
-    campos = st.multiselect("Campos a serem gerados", CAMPOS_DISPONIVEIS, default=CAMPOS_DISPONIVEIS)
-    if st.button("📊 Gerar Dados"):
-        massa_dados = gerar_massa_de_dados(quantidade, campos)
-        st.subheader(f"📄 {quantidade} Registros Gerados")
-        st.json(massa_dados)
+    campos_disponiveis = ["nome", "email", "cpf", "cnpj",
+                          "telefone", "endereco", "data_nascimento"]
+    campos_selecionados = st.multiselect(
+        "Campos a serem gerados", campos_disponiveis, default=campos_disponiveis)
+    quantidade = st.slider("Quantidade de registros", 1, 100, 10)
 
-        csv_buffer = io.StringIO()
-        writer = json.dumps(massa_dados, ensure_ascii=False, indent=4)
-        st.download_button("⬇️ Baixar JSON", data=writer, file_name="massa_dados.json")
-elif pagina == "Gerador de Massa Bancária":
-    st.subheader("🏦 Gerador de Massa de Dados Bancários")
-    quantidade = st.slider("Quantidade de contas bancárias", 1, 50, 10)
-    if st.button("💳 Gerar Dados Bancários"):
-        massa_bancaria = gerar_massa_bancaria(quantidade)
-        st.subheader(f"📄 {quantidade} Contas Geradas")
-        st.json(massa_bancaria)
-
-        json_bytes = json.dumps(massa_bancaria, ensure_ascii=False, indent=4).encode('utf-8')
-        st.download_button("⬇️ Baixar JSON", data=json_bytes, file_name="massa_bancaria.json")
-elif pagina == "Gerador de Testes de Carga":
-    st.subheader("⚡ Gerador de Testes de Carga")
-    quantidade = st.slider("Quantidade de registros", 1000, 100000, 10000, step=1000)
-    if st.button("🔥 Gerar Dados de Carga"):
-        salvar_csv("massa_carga.csv", quantidade)
-        salvar_json("massa_carga.json", quantidade)
-        st.success(f"✅ {quantidade} registros de carga gerados!")
-elif pagina == "Testar API":
-    st.subheader("🌐 Testador de API | v.01")
-    url = st.text_input("🔗 URL da API")
-    metodo = st.selectbox("Método HTTP", ["GET", "POST", "PUT", "DELETE"])
-    payload = None
-    headers = {}
-
-    if metodo in ["POST", "PUT"]:
-        payload_str = st.text_area("📤 Payload JSON (opcional)")
-        if payload_str:
-            try:
-                payload = json.loads(payload_str)
-            except Exception as e:
-                st.error(f"Payload inválido: {e}")
-
-    key = st.text_input("Header Key")
-    value = st.text_input("Header Value")
-    if key and value:
-        headers[key] = value
-
-    if st.button("🚀 Enviar Requisição"):
-        if not url.startswith(("http://", "https://")):
-            st.error("URL deve começar com http:// ou https://")
+    if st.button("📊 Gerar Dados", type="primary"):
+        if not campos_selecionados:
+            st.error("Por favor, selecione pelo menos um campo para gerar.")
         else:
-            try:
-                resp = getattr(requests, metodo.lower())(url, json=payload, headers=headers, timeout=5)
-                st.write(f"📡 Status: {resp.status_code}")
-                st.write(f"⏳ Tempo: {resp.elapsed.total_seconds()}s")
+            massa_dados = gerar_massa_de_dados(quantidade, campos_selecionados)
+            exibir_e_baixar_json(
+                f"📄 {quantidade} Registros Gerados", massa_dados, "massa_dados.json")
+
+elif st.session_state.pagina == "Gerador de Massa Bancária":
+    st.subheader("🏦 Gerador de Massa de Dados Bancários")
+    quantidade = st.slider("Quantidade de contas bancárias", 1, 100, 10)
+    if st.button("💳 Gerar Dados Bancários", type="primary"):
+        massa_bancaria = gerar_massa_bancaria(quantidade)
+        exibir_e_baixar_json(
+            f"📄 {quantidade} Contas Geradas", massa_bancaria, "massa_bancaria.json")
+
+elif st.session_state.pagina == "Gerador de Testes de Carga":
+    st.subheader("⚡ Gerador de Testes de Carga")
+    st.info("Gere um grande volume de dados para testes de performance e carga.")
+    quantidade = st.number_input(
+        "Quantidade de registros", min_value=1000, max_value=200000, value=10000, step=1000)
+
+    if st.button("🔥 Gerar Dados de Carga", type="primary"):
+        with st.spinner(f"Gerando {quantidade} registros..."):
+            dados_carga = gerar_massa_de_dados(
+                quantidade, ["nome", "email", "cpf", "id_transacao", "valor"])
+            df_carga = pd.DataFrame(dados_carga)
+        st.success(f"✅ {quantidade} registros de carga gerados!")
+        exibir_e_baixar_csv("Amostra dos Dados (CSV)",
+                            df_carga, "massa_carga.csv")
+        exibir_e_baixar_json("Dados Completos (JSON)",
+                             dados_carga, "massa_carga.json")
+
+elif st.session_state.pagina == "Testar API":
+    st.subheader("🌐 Testador de API")
+    url = st.text_input(
+        "🔗 URL da API", placeholder="https://api.example.com/data")
+    metodo = st.selectbox("Método HTTP", ["GET", "POST", "PUT", "DELETE"])
+
+    st.markdown("##### **Cabeçalhos (Headers)**")
+    col1, col2, col3 = st.columns([3, 3, 1])
+    header_key = col1.text_input(
+        "Chave", key="h_key", label_visibility="collapsed", placeholder="Chave")
+    header_value = col2.text_input(
+        "Valor", key="h_val", label_visibility="collapsed", placeholder="Valor")
+    if col3.button("Adicionar", key="add_header"):
+        if header_key and header_value:
+            st.session_state.api_headers[header_key] = header_value
+            st.rerun()
+        else:
+            st.warning("Preencha a chave e o valor do cabeçalho.")
+
+    if st.session_state.api_headers:
+        st.write("Cabeçalhos atuais:")
+        for key, value in list(st.session_state.api_headers.items()):
+            col_k, col_v, col_del = st.columns([3, 3, 1])
+            col_k.write(f"`{key}`")
+            col_v.write(f"`{value}`")
+            if col_del.button(f"❌", key=f"del_{key}"):
+                del st.session_state.api_headers[key]
+                st.rerun()
+
+    payload_str = ""
+    if metodo in ["POST", "PUT"]:
+        payload_str = st.text_area("📤 Corpo da Requisição (JSON)", height=150)
+
+    if st.button("🚀 Enviar Requisição", type="primary"):
+        if not url.startswith(("http://", "https://")):
+            st.error("URL inválida. Deve começar com http:// ou https://")
+        else:
+            payload = None
+            if payload_str:
                 try:
-                    data = resp.json()
-                    st.json(data)
-                    st.download_button("⬇️ Baixar JSON", data=json.dumps(data, indent=4), file_name="resposta.json")
-                except:
-                    st.text_area("📥 Resposta", resp.text, height=200)
-            except Exception as e:
-                st.error(f"Erro: {e}")
-elif pagina == "Exportar Relatório":
+                    payload = json.loads(payload_str)
+                except json.JSONDecodeError as e:
+                    st.error(
+                        f"Erro no formato JSON do corpo da requisição: {e}")
+                    st.stop()
+            try:
+                with st.spinner("Enviando requisição..."):
+                    resp = getattr(requests, metodo.lower())(
+                        url, json=payload, headers=st.session_state.api_headers, timeout=10
+                    )
+                status_code = resp.status_code
+                st.success(f"📡 Status: {status_code}") if 200 <= status_code < 300 else st.error(
+                    f"📡 Status: {status_code}")
+                st.info(
+                    f"⏳ Tempo de Resposta: {resp.elapsed.total_seconds():.2f}s")
+                st.subheader("📥 Resposta da API")
+                try:
+                    resposta_json = resp.json()
+                    exibir_e_baixar_json(
+                        "Corpo da Resposta (JSON)", resposta_json, "resposta_api.json")
+                except json.JSONDecodeError:
+                    st.text_area("Corpo da Resposta (Texto)",
+                                 resp.text, height=200)
+            except requests.exceptions.RequestException as e:
+                st.error(f"Erro ao tentar conectar à API: {e}")
+
+elif st.session_state.pagina == "Exportar Relatório":
     st.subheader("📑 Exportar Relatório de Casos de Teste")
-    if st.button("📤 Exportar Relatório"):
-        casos = gerar_casos_de_teste("doc1", "doc2")
-        exportar_relatorio(casos)
-        st.success("✅ Relatório exportado!")
+    casos_para_exportar = st.session_state.casos_de_teste_gerados
+    if not casos_para_exportar:
+        st.warning("⚠️ Nenhum caso de teste foi gerado ainda.")
+        st.info(
+            "Vá para a página 'Gerar Cenários de Teste' para criar os casos primeiro.")
+    else:
+        st.success(
+            f"✅ {len(casos_para_exportar)} casos de teste prontos para serem exportados.")
+        st.markdown("Pré-visualização dos casos:")
+        for caso in casos_para_exportar[:3]:
+            st.markdown(f"```\n{caso}\n```")
+        if st.button("📤 Exportar Relatório Agora", type="primary"):
+            exportar_relatorio(casos_para_exportar)

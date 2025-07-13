@@ -1,135 +1,74 @@
 # 🧪 AgenteIA Engine – TGI
 
-O **AgenteIA Engine – TGI** é uma aplicação que utiliza Inteligência Artificial para gerar automaticamente **casos de teste** com base em documentos de requisitos (PDF, Excel, imagens). 
-
-
+O **AgenteIA Engine – TGI** é uma ferramenta de automação de testes construída com Streamlit e Python. A aplicação utiliza Inteligência Artificial para gerar casos de teste a partir de documentos de requisitos, além de oferecer um conjunto de utilitários para Quality Assurance (QA), como geração de massa de dados e testes de API.
 
 ---
-## 📝 Histórico de Versões
 
-### 📌 **v0.0.1 – [16/05/2025]**
-- 📄 **Extração de requisitos de documentos** (PDF, Excel, imagens escaneadas).
-- 🤖 **Geração automática de casos de teste** com IA (GPT).
-- 📤 **Exportação de relatórios** em PDF, Markdown e Excel.
-- 💬 **Interface Web interativa** com Streamlit.
+## ✨ Funcionalidades Principais
 
-
-### 📌 **v0.0.2 – [16/05/2025]**
-🔹 **Melhoria na geração de massa de dados para QA**  
-🔹 **Correção do `enumerate` no Jinja2 para relatórios**  
-🔹 **Adição do suporte a exportação de relatórios HTML** 
-🔹 **Adição de Menus Laterais**  
-🔹 **Criação do módulo `bank_generator.py`** para separar massa de dados bancários  
-🔹 **Correção do erro `ModuleNotFoundError: No module named 'faker'` no Docker**  
-🔹 **Exportação de massa bancária para CSV**
-
-
-### 📌 **v0.0.3 – [16/05/2025]**
-🔹 **Melhorando a Geração de Casos de Testes** <br>
-      - Foi adicionado opções de **Upload do Documento do Desenvolvedor e da Especificação de Funcionalidade**
-
-
-🔹 **Foi Melhorando a Geração Fake de Dados Bancarios** <br>
-      - A geração agora, permiti no minimo a **Geração de 5 Massas de Dados**  
-
-
-### 📌 **v0.0.5 – [18/05/2025]**
-🔹 **Adição do Test Stress** <br>
-      - Agora é possivel gerar Massa de Dados, para realziar Tests de Stress
-
-🔹 **Adição de Test API** <br>
-      - Agora é possivel realizar Testes de API, via Agente IA. 
-      ![API](https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExcWJyeXV0MzcxeWJvZm5tOTVoaGNyazM4Mmh6Z3duOTV0em1xMzdsNSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/44okQTpfZAlr2ilEgg/giphy.gif)
-
-### 📌 **v0.0.7 – [18/05/2025]**
-🔹 **Melhoria na Geração de Dados** <br>
-      - Agora é possivel selecionar os dados, que você deseja gerar para seu testes.
-      ![GeracaoDeDadosv2](https://media0.giphy.com/media/v1.Y2lkPTc5MGI3NjExcmZlaXc0Y2p2cnl6ajQxd25jamQ5eGpuNjF1b3F6YnBnZWM0a2NqcCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/3hoCVPt9QQyE7TG9tB/giphy.gif)
-
-### 📌 **v0.0.8 – [22/05/2025]**
-🔹 **Melhoria no Menu Lateral** <br>
-      - Menu Lateral, anteriormente, estava gerando confusão e certos Bugs. Então, resolvi realizar a unificação dos Menus.
-      ![MenuLateral]()
-
+* **Geração de Casos de Teste por IA:** Faça upload de documentos de especificação e desenvolvimento para gerar casos de teste automaticamente.
+* **Gerador de Massa de Dados:** Crie dados fictícios (nomes, CPFs, CNPJs, etc.) para os seus testes.
+* **Gerador de Dados Bancários:** Gere dados bancários fictícios para cenários de teste financeiros.
+* **Gerador para Testes de Carga:** Crie grandes volumes de dados em formato CSV ou JSON para testes de stress e performance.
+* **Testador de API:** Envie requisições (GET, POST, PUT, DELETE) para qualquer endpoint de API diretamente da interface.
+* **Exportação de Relatórios:** Exporte os resultados e os dados gerados em formatos como JSON, CSV e TXT.
 
 ---
 
 ## 📦 Tecnologias Utilizadas
 
-- **Python 3.11+**
-- [Streamlit](https://streamlit.io) – Interface Web
-- [OpenAI API](https://platform.openai.com) – Geração de casos com IA
-- **Tesseract OCR** – Leitura de textos em imagens
-- **pdfplumber / openpyxl** – Processamento de arquivos PDF e Excel
-- **WeasyPrint** – Exportação de relatórios em PDF
-- Docker (opcional)
-- Faker
-- Entr
+* **Python 3.11+**
+* **Streamlit:** Para a interface web interativa.
+* **Pandas:** Para manipulação de dados.
+* **OpenAI API:** (ou outro modelo de LLM) Para a geração de casos de teste.
+* **WeasyPrint:** Para a exportação de relatórios em PDF.
+* **Tesseract OCR:** Para a leitura de textos em imagens e PDFs escaneados.
 
 ---
 
-## ⚙️ Como Executar Localmente
+## ⚙️ Configuração do Ambiente Local
 
-### Pré-requisitos
+Antes de executar o projeto, é crucial instalar as dependências de sistema que não são pacotes Python.
 
-- Python 3.11 instalado
-- Pip (gerenciador de pacotes)
+### Pré-requisitos de Sistema
 
-### 1. Clone o repositório
+1.  **Python 3.11 ou superior:** [Faça o download aqui](https://www.python.org/downloads/).
+2.  **GTK3 (para WeasyPrint):** `WeasyPrint` precisa do GTK3 para gerar PDFs.
+    * **Instruções:** Siga o guia que forneci anteriormente para [instalar o GTK3 no Windows](https://github.com/tschoonj/GTK-for-Windows-Runtime-Environment-Installer/releases) e adicioná-lo ao PATH do sistema.
+3.  **Tesseract OCR (Opcional):** Necessário se for processar imagens.
+    * **Instruções para Windows:** Faça o download e instale a partir [deste link](https://github.com/UB-Mannheim/tesseract/wiki). Durante a instalação, **certifique-se de adicionar o Tesseract ao PATH do sistema.**
 
-```bash
-git clone https://github.com/seu-usuario/agente-inteligente-testes.git
-cd agente-inteligente-testes
-```
+### Passos para Instalação
 
-### 2. Instale as dependências
+1.  **Clone o repositório:**
+    ```bash
+    git clone [https://github.com/seu-usuario/agente-ia-qa.git](https://github.com/seu-usuario/agente-ia-qa.git)
+    cd agente-ia-qa
+    ```
 
-```bash
-pip install -r requirements.txt
-```
+2.  **(Recomendado) Crie e ative um ambiente virtual:**
+    ```bash
+    python -m venv venv
+    # No Windows
+    .\venv\Scripts\activate
+    # No macOS/Linux
+    source venv/bin/activate
+    ```
 
-### 3. Execute o aplicativo
+3.  **Instale as dependências Python:**
+    ```bash
+    pip install -r requirements.txt
+    ```
 
-```bash
-streamlit run app.py
-```
+4.  **Execute a aplicação Streamlit:**
+    ```bash
+    streamlit run app.py
+    ```
 
----
-
-## 🐳 Executando com Docker
-
-```bash
-docker build -t agente-testes .
-docker run -p 8501:8501 agente-testes
-```
-
-> Acesse: http://localhost:8501
-
----
-
-## 📁 Estrutura do Projeto
-
-```
-agente_inteligente_testes/
-├── app.py
-├── bank_generator.py
-├── data_generator
-├── api.py
-├── chatbot.py
-├── automation_engine.py
-├── file_processor.py
-├── report_generator.py
-├── test_generator.py
-├── integrations/
-│   ├── azure_client.py
-│   ├── jira_client.py
-│   └── github_client.py
-├── requirements.txt
-└── README.md
-```
+A aplicação estará disponível no seu navegador no endereço `http://localhost:8501`.
 
 ---
 
-## 📜 Licença
+## 📁 Estrutura Sugerida do Projeto
 
-Este projeto está licenciado sob a [MIT License](LICENSE).
+Para que o `app.py` funcione corretamente, a estrutura do seu projeto deve ser semelhante a esta, com os módulos importados dentro de uma pasta `Funcionalidades`:

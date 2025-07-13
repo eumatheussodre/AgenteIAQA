@@ -1,21 +1,28 @@
+# Core
 streamlit
+pandas
+
+# IA e Processamento de Linguagem
 langchain
 openai
-tesseract
+
+# Processamento de Ficheiros
+openpyxl
 pdfplumber
 pytesseract
-openpyxl
-pandas
-selenium
-pytest
-fastapi
-uvicorn
-jinja2
 weasyprint
-chromadb
+
+# Geração de Dados
+Faker
+
+# Testes e API
 azure-devops
+fastapi
+jinja2
 msrest
-Faker==37.3.0
-entr
+pytest
+selenium
+uvicorn
 
-
+# Base de Dados Vetorial
+chromadb

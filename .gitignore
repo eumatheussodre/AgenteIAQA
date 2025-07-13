@@ -1,2 +1,24 @@
-./arquivos_bkps
-relatorio.*
+# Arquivos do projeto
+./arquivos_bkps 
+relatorio.* 
+
+# Ambientes Virtuais
+.env
+.venv
+venv/
+env/
+
+# Ficheiros de Cache e Compilados do Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Ficheiros de configuração de IDEs
+.vscode/
+.idea/
+
+# Ficheiros do sistema
+.DS_Store
+Thumbs.db
