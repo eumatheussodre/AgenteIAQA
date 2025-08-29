@@ -1,3 +1,47 @@
+# AgenteIAQA
+
+Um agente inteligente para automação de QA, geração de dados, cenários de teste e exportação de relatórios.
+
+## Estrutura do Projeto
+
+- `app.py`: Interface principal (Streamlit)
+- `core/`: Lógica de negócio e utilitários
+- `Funcionalidades/`: Módulos legados e páginas
+- `tests/`: Testes automatizados
+
+## Como rodar
+
+1. Instale as dependências:
+    ```bash
+    pip install -r requirements.txt
+    ```
+2. Execute a interface:
+    ```bash
+    streamlit run app.py
+    ```
+
+## Como rodar os testes
+
+```bash
+pytest tests/
+```
+
+## Melhorias implementadas
+- Separação entre interface e lógica de negócio
+- Estrutura pronta para testes automatizados
+- Pronto para integração com API ou outras interfaces
+
+## Fine-tuning de IA
+
+Para usar fine-tuning com modelos HuggingFace:
+1. Defina a tarefa (ex: geração de casos de teste)
+2. Prepare exemplos de entrada/saída
+3. Use a biblioteca `transformers` para treinar um modelo com seus dados
+4. Importe o modelo treinado no seu projeto (exemplo em breve)
+
+---
+
+Sinta-se à vontade para sugerir novas funcionalidades!
 # 🧪 AgenteIA Engine – TGI
 
 O **AgenteIA Engine – TGI** é uma ferramenta de automação de testes construída com Streamlit e Python. A aplicação utiliza Inteligência Artificial para gerar casos de teste a partir de documentos de requisitos, além de oferecer um conjunto de utilitários para Quality Assurance (QA), como geração de massa de dados e testes de API.
