@@ -1,4 +1,6 @@
+
 import React, { useState } from "react";
+import { darkTheme } from "../darkTheme";
 import axios from "axios";
 
 export default function MassaBancaria() {
@@ -8,17 +10,15 @@ export default function MassaBancaria() {
   const [loading, setLoading] = useState(false);
   const [erro, setErro] = useState("");
 
-  const gerar = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
     setErro("");
     setResultado(null);
+    setLoading(true);
     try {
-      const form = new FormData();
-      form.append("quantidade", quantidade);
-      form.append("permitir_negativo", permitirNegativo);
-      const resp = await axios.post("http://localhost:8000/gerar-massa-bancaria/", form);
-      setResultado(resp.data.massa_bancaria);
+      // Substitua a URL abaixo pelo endpoint real do backend
+      const res = await axios.post("/api/massa-bancaria", { quantidade });
+      setResultado(res.data.resultado || JSON.stringify(res.data, null, 2));
     } catch (err) {
       setErro("Erro ao gerar massa bancária.");
     } finally {
@@ -27,29 +27,39 @@ export default function MassaBancaria() {
   };
 
   return (
-    <div style={{ maxWidth: 500, margin: "40px auto", fontFamily: "sans-serif" }}>
-      <h2>Gerar Massa Bancária</h2>
-      <form onSubmit={gerar}>
-        <label>Quantidade:
-          <input type="number" min={1} max={100} value={quantidade} onChange={e => setQuantidade(e.target.value)} style={{ width: 80, marginLeft: 8 }} />
-        </label>
-        <br/>
-        <label>
-          <input type="checkbox" checked={permitirNegativo} onChange={e => setPermitirNegativo(e.target.checked)} />
-          Permitir saldo negativo
-        </label>
-        <br/>
-        <button type="submit" disabled={loading} style={{ marginTop: 16 }}>
-          {loading ? "Gerando..." : "Gerar Massa Bancária"}
-        </button>
-      </form>
-      {erro && <div style={{ color: "red", marginTop: 16 }}>{erro}</div>}
-      {resultado && (
-        <div style={{ marginTop: 24 }}>
-          <strong>Resultado:</strong>
-          <pre style={{ background: "#f4f4f4", padding: 12 }}>{JSON.stringify(resultado, null, 2)}</pre>
-        </div>
-      )}
+    <div style={darkTheme.pageBg}>
+      <div style={darkTheme.cardStyle}>
+        <h2 style={darkTheme.titleStyle}>
+          Gerar Massa Bancária
+        </h2>
+        <form onSubmit={handleSubmit}>
+          <label style={darkTheme.labelStyle}>
+            Quantidade de contas:
+            <input
+              type="number"
+              min="1"
+              value={quantidade}
+              onChange={e => setQuantidade(e.target.value)}
+              style={darkTheme.inputStyle}
+              required
+            />
+          </label>
+          <button
+            type="submit"
+            style={darkTheme.buttonStyle}
+            disabled={loading}
+          >
+            {loading ? "Gerando..." : "Gerar"}
+          </button>
+        </form>
+        {erro && <div style={darkTheme.erroStyle}>{erro}</div>}
+        {resultado && (
+          <pre style={darkTheme.preStyle}>{resultado}</pre>
+        )}
+        <a href="/" style={{ ...darkTheme.linkStyle, marginTop: 18 }}>
+          Voltar para Home
+        </a>
+      </div>
     </div>
   );
 }

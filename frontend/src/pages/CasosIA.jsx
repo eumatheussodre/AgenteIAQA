@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../api";
+import { darkTheme } from "../darkTheme";
 
 export default function CasosIA() {
   const [requisito, setRequisito] = useState("");
@@ -13,8 +14,12 @@ export default function CasosIA() {
     setErro("");
     setCaso("");
     try {
-      const resp = await axios.post("http://localhost:8000/gerar-caso-ia/", { requisito });
-      setCaso(resp.data.caso);
+      const resp = await api.post("/api/gerar-caso-ia", { requisito });
+      if (resp.data && resp.data.caso) {
+        setCaso(resp.data.caso);
+      } else {
+        setErro("Resposta inválida do backend.");
+      }
     } catch (err) {
       setErro("Erro ao gerar caso de teste.");
     } finally {
@@ -23,30 +28,34 @@ export default function CasosIA() {
   };
 
   return (
-    <div style={{ maxWidth: 500, margin: "40px auto", fontFamily: "sans-serif" }}>
-      <h2>Gerar Caso de Teste (IA)</h2>
-      <form onSubmit={gerarCaso}>
-        <label>
-          Requisito:
-          <textarea
-            value={requisito}
-            onChange={e => setRequisito(e.target.value)}
-            rows={4}
-            style={{ width: "100%", marginTop: 8 }}
-            required
-          />
-        </label>
-        <button type="submit" disabled={loading} style={{ marginTop: 16 }}>
-          {loading ? "Gerando..." : "Gerar Caso de Teste"}
-        </button>
-      </form>
-      {erro && <div style={{ color: "red", marginTop: 16 }}>{erro}</div>}
-      {caso && (
-        <div style={{ marginTop: 24 }}>
-          <strong>Caso de Teste Gerado:</strong>
-          <pre style={{ background: "#f4f4f4", padding: 12 }}>{caso}</pre>
-        </div>
-      )}
+    <div style={darkTheme.pageBg}>
+      <div style={darkTheme.cardStyle}>
+        <h2 style={darkTheme.titleStyle}>🧪 Gerar Caso de Teste (IA)</h2>
+        <form onSubmit={gerarCaso}>
+          <label style={darkTheme.labelStyle}>
+            Requisito:
+            <textarea
+              value={requisito}
+              onChange={e => setRequisito(e.target.value)}
+              rows={4}
+              style={darkTheme.inputStyle}
+              required
+            />
+          </label>
+          <button type="submit" disabled={loading} style={darkTheme.buttonStyle}>
+            {loading ? "Gerando..." : "Gerar Caso de Teste"}
+          </button>
+        </form>
+        {erro && <div style={darkTheme.erroStyle}>{erro}</div>}
+        {caso && (
+          <div style={{ marginTop: 24 }}>
+            <strong>Caso de Teste Gerado:</strong>
+            <pre style={darkTheme.preStyle}>{caso}</pre>
+          </div>
+        )}
+      </div>
     </div>
   );
 }
+
+// ...estilos agora via darkTheme...

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import axios from "axios";
+import api from "../api";
+import { darkTheme } from "../darkTheme";
 
 export default function ExportarRelatorio() {
   const [casos, setCasos] = useState("");
@@ -17,7 +18,7 @@ export default function ExportarRelatorio() {
       const form = new FormData();
       casos.split("\n").forEach(c => form.append("casos", c));
       form.append("nome_base", nome);
-      await axios.post("http://localhost:8000/exportar-relatorio/", form);
+      await api.post("/api/exportar-relatorio", form);
       setStatus("Relatório exportado com sucesso!");
     } catch (err) {
       setErro("Erro ao exportar relatório.");
@@ -27,23 +28,25 @@ export default function ExportarRelatorio() {
   };
 
   return (
-    <div style={{ maxWidth: 500, margin: "40px auto", fontFamily: "sans-serif" }}>
-      <h2>Exportar Relatório</h2>
-      <form onSubmit={exportar}>
-        <label>Casos de Teste (um por linha):
-          <textarea value={casos} onChange={e => setCasos(e.target.value)} rows={6} style={{ width: "100%", marginTop: 8 }} required />
-        </label>
-        <br/>
-        <label>Nome base do relatório:
-          <input type="text" value={nome} onChange={e => setNome(e.target.value)} style={{ width: "100%", marginTop: 8 }} />
-        </label>
-        <br/>
-        <button type="submit" disabled={loading} style={{ marginTop: 16 }}>
-          {loading ? "Exportando..." : "Exportar"}
-        </button>
-      </form>
-      {erro && <div style={{ color: "red", marginTop: 16 }}>{erro}</div>}
-      {status && <div style={{ color: "green", marginTop: 16 }}>{status}</div>}
+    <div style={darkTheme.pageBg}>
+      <div style={darkTheme.cardStyle}>
+        <h2 style={darkTheme.titleStyle}>📑 Exportar Relatório</h2>
+        <form onSubmit={exportar}>
+          <label style={darkTheme.labelStyle}>Casos de Teste (um por linha):
+            <textarea value={casos} onChange={e => setCasos(e.target.value)} rows={6} style={darkTheme.inputStyle} required />
+          </label>
+          <label style={darkTheme.labelStyle}>Nome base do relatório:
+            <input type="text" value={nome} onChange={e => setNome(e.target.value)} style={darkTheme.inputStyle} />
+          </label>
+          <button type="submit" disabled={loading} style={darkTheme.buttonStyle}>
+            {loading ? "Exportando..." : "Exportar"}
+          </button>
+        </form>
+        {erro && <div style={darkTheme.erroStyle}>{erro}</div>}
+        {status && <div style={darkTheme.statusStyle}>{status}</div>}
+      </div>
     </div>
   );
 }
+
+// ...estilos agora via darkTheme...

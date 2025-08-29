@@ -5,6 +5,7 @@ import CasosIA from "./pages/CasosIA";
 import MassaDados from "./pages/MassaDados";
 import MassaBancaria from "./pages/MassaBancaria";
 import ExportarRelatorio from "./pages/ExportarRelatorio";
+import LlamaIA from "./pages/LlamaIA";
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
         <Route path="/massa" element={<MassaDados />} />
         <Route path="/bancaria" element={<MassaBancaria />} />
         <Route path="/exportar" element={<ExportarRelatorio />} />
+        <Route path="/llama" element={<LlamaIA />} />
       </Routes>
     </BrowserRouter>
   );
