@@ -1,7 +1,7 @@
 
 import React, { useState } from "react";
 import { darkTheme } from "../darkTheme";
-import axios from "axios";
+import api from "../api";
 
 export default function MassaBancaria() {
   const [quantidade, setQuantidade] = useState(10);
@@ -16,8 +16,8 @@ export default function MassaBancaria() {
     setResultado(null);
     setLoading(true);
     try {
-      // Substitua a URL abaixo pelo endpoint real do backend
-      const res = await axios.post("/api/massa-bancaria", { quantidade });
+      // Usando a instância do axios configurada com baseURL
+      const res = await api.post("/api/massa-bancaria", { quantidade });
       setResultado(res.data.resultado || JSON.stringify(res.data, null, 2));
     } catch (err) {
       setErro("Erro ao gerar massa bancária.");

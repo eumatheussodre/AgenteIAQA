@@ -1,48 +1,85 @@
 import faker from "faker";
 
+// Configurar o faker para usar locale brasileiro para melhor performance
+faker.locale = "pt_BR";
+
+// Cache de dados pré-gerados para melhor performance
+const precomputedData = {
+    names: [],
+    companies: [],
+    addresses: []
+};
+
+// Função para pré-computar dados se não existirem
+function ensurePrecomputedData() {
+    if (precomputedData.names.length === 0) {
+        for (let i = 0; i < 100; i++) {
+            precomputedData.names.push(faker.name.findName());
+            precomputedData.companies.push(faker.company.companyName());
+            precomputedData.addresses.push(faker.address.streetAddress());
+        }
+    }
+}
+
 export function gerarMassaDados(quantidade, campos) {
-    const resultado = [];
+    ensurePrecomputedData();
+
+    // Pré-aloca o array com o tamanho necessário
+    const resultado = new Array(quantidade);
+
+    // Otimiza a geração usando operações mais rápidas
     for (let i = 0; i < quantidade; i++) {
         const item = {};
-        campos.forEach((campo) => {
+
+        // Usa um loop mais eficiente
+        for (const campo of campos) {
             switch (campo) {
                 case "nome":
-                    item[campo] = faker.name.findName(); break;
+                    item[campo] = precomputedData.names[i % 100]; break;
                 case "email":
-                    item[campo] = faker.internet.email(); break;
+                    item[campo] = `user${i}@exemplo.com`; break;
                 case "cpf":
-                    item[campo] = faker.random.number({ min: 10000000000, max: 99999999999 }).toString(); break;
+                    item[campo] = String(Math.floor(Math.random() * 90000000000) + 10000000000); break;
                 case "cnpj":
-                    item[campo] = faker.random.number({ min: 10000000000000, max: 99999999999999 }).toString(); break;
+                    item[campo] = String(Math.floor(Math.random() * 90000000000000) + 10000000000000); break;
                 case "telefone":
-                    item[campo] = faker.phone.phoneNumber(); break;
+                    item[campo] = `(11) 9${String(Math.floor(Math.random() * 100000000)).padStart(8, '0')}`; break;
                 case "endereco":
-                    item[campo] = faker.address.streetAddress(); break;
+                    item[campo] = precomputedData.addresses[i % 100]; break;
                 case "data_nascimento":
-                    item[campo] = faker.date.past(40, new Date(2005, 0, 1)).toISOString().split('T')[0]; break;
+                    const year = 1970 + (i % 50);
+                    const month = String(Math.floor(Math.random() * 12) + 1).padStart(2, '0');
+                    const day = String(Math.floor(Math.random() * 28) + 1).padStart(2, '0');
+                    item[campo] = `${year}-${month}-${day}`; break;
                 case "empresa":
-                    item[campo] = faker.company.companyName(); break;
+                    item[campo] = precomputedData.companies[i % 100]; break;
                 default:
                     item[campo] = "-";
             }
-        });
-        resultado.push(item);
+        }
+        resultado[i] = item;
     }
     return resultado;
 }
 
 export function gerarMassaBancaria(quantidade, permitirNegativo) {
-    const resultado = [];
+    ensurePrecomputedData();
+
+    // Pré-aloca o array com o tamanho necessário
+    const resultado = new Array(quantidade);
+
     for (let i = 0; i < quantidade; i++) {
-        resultado.push({
-            conta: faker.finance.account(),
-            agencia: faker.finance.account(4),
-            saldo: permitirNegativo
-                ? faker.finance.amount(-1000, 10000, 2)
-                : faker.finance.amount(0, 10000, 2),
-            titular: faker.name.findName(),
-            banco: faker.company.companyName(),
-        });
+        const saldo = permitirNegativo
+            ? (Math.random() * 11000) - 1000  // -1000 a 10000
+            : Math.random() * 10000;          // 0 a 10000
+
+        resultado[i] = {
+            conta: String(Math.floor(Math.random() * 900000) + 100000),
+            agencia: String(Math.floor(Math.random() * 9000) + 1000),
+            saldo: saldo.toFixed(2),
+            titular: precomputedData.names[i % 100],
+            banco: precomputedData.companies[i % 100],
+        };
     }
     return resultado;
 }
